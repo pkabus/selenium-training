@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -18,6 +19,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 /**
  * Abstract JUnit test case, that loads selenium-specific properties and creates
@@ -31,21 +33,26 @@ public abstract class AbstractWebDriverTest {
 	private static final String SELENIUM_PROPERTIES_FILE = "selenium.properties";
 	private static final String SELENIUM_BROWSER = "selenium.browser";
 	private static final String BROWSER_HEADLESS = "browser.headless";
+	private static final String SELENIUM_HUB = "selenium.hub";
 
 	private WebDriver driver;
 
 	/**
 	 * Loads the selenium.properties file and merges it in the system-properties.
 	 * Furthermore, a web driver is created.
-	 * 
-	 * @throws MalformedURLException
 	 */
 	@Before
 	public void setUp() {
 		loadSeleniumProperties();
-		createLocalWebDriver();
-		// driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"),
-		// getCapabilities());
+
+		String hubUrl = seleniumHubUrl();
+		if (hubUrl != null) {
+			// use a hub to start selenium test case
+			createRemoteWebDriver();
+		} else {
+			// otherwise run selenium locally
+			createLocalWebDriver();
+		}
 	}
 
 	private void loadSeleniumProperties() {
@@ -84,6 +91,15 @@ public abstract class AbstractWebDriverTest {
 		}
 
 		return driver;
+	}
+
+	private WebDriver createRemoteWebDriver() {
+		try {
+			driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getCapabilities());
+			return driver;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private ChromeOptions createChromeOptions() {
@@ -131,6 +147,10 @@ public abstract class AbstractWebDriverTest {
 
 	private boolean startHeadless() {
 		return Boolean.parseBoolean(System.getProperty(BROWSER_HEADLESS));
+	}
+
+	private String seleniumHubUrl() {
+		return System.getProperty(SELENIUM_HUB);
 	}
 
 	/**
