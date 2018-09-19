@@ -1,0 +1,267 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+	<groupId>net.proventis.training</groupId>
+	<artifactId>selenium-training</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<surefire.useFile>false</surefire.useFile>
+		<selenium.version>3.12.0</selenium.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+				<version>${selenium.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-server</artifactId>
+				<version>3.12.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>src/integration-test/resources/selenium.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9.1</version>
+				<executions>
+					<!-- Add a new source directory to our build -->
+					<execution>
+						<id>add-integration-test-sources</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<!-- Configures the source directory of our integration tests -->
+							<sources>
+								<source>src/integration-test/java</source>
+							</sources>
+						</configuration>
+					</execution>
+					<!-- Add a new resource directory to our build -->
+					<execution>
+						<id>add-integration-test-resources</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<!-- Configures the resource directory of our integration tests -->
+							<resources>
+								<resource>
+									<filtering>true</filtering>
+									<directory>src/integration-test/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19</version>
+				<executions>
+					<execution>
+						<id>integration-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/*.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>selenium</id>
+
+			<properties>
+				<selenium.gridlauncher>org.openqa.grid.selenium.GridLauncherV3</selenium.gridlauncher>
+				<selenium.hub>-role hub</selenium.hub>
+				<selenium.node>-role node -hub http://localhost:4444/grid/register</selenium.node>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<id>selenium-grid-setup</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<property name="plugin_classpath" refid="maven.plugin.classpath" />
+										<property name="runtime_classpath" refid="maven.runtime.classpath" />
+
+										<echo message="start selenium hub" />
+										<java classname="${selenium.gridlauncher}" failonerror="false" fork="true" spawn="true" dir="${project.build.directory}">
+											<classpath>
+												<pathelement path="${runtime_classpath}" />
+											</classpath>
+											<sysproperty key="role" value="hub" />
+											<sysproperty key="port" value="4444" />
+
+											<arg line="${selenium.hub}" />
+										</java>
+
+										<waitfor maxwait="20" maxwaitunit="second" checkevery="500">
+											<http url="http://localhost:4444/grid" />
+										</waitfor>
+
+										<echo message="${selenium.webdriver}" />
+										<echo message="${selenium.webdriver.path}" />
+
+										<echo message="start selenium node" />
+										<java classname="${selenium.gridlauncher}" failonerror="false" fork="true" spawn="true" dir="${project.build.directory}">
+											<classpath>
+												<pathelement path="${runtime_classpath}" />
+											</classpath>
+											<sysproperty key="webdriver.chrome.driver" value="${webdriver.chrome.driver}" />
+											<sysproperty key="webdriver.gecko.driver" value="${webdriver.gecko.driver}" />
+
+											<arg line="${selenium.node}" />
+										</java>
+
+									</target>
+								</configuration>
+							</execution>
+
+							<execution>
+								<id>selenium-grid-teardown</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<property name="runtime_classpath" refid="maven.runtime.classpath" />
+
+										<!-- find selenium server hub process -->
+										<exec executable="${JAVA_HOME}/bin/jps">
+											<arg value="-l" />
+											<arg value="-m" />
+											<redirector outputproperty="processid.hub">
+												<outputfilterchain>
+													<linecontains>
+														<contains value="${selenium.gridlauncher} ${selenium.hub}" />
+													</linecontains>
+													<replacestring from=" ${selenium.gridlauncher} ${selenium.hub}" />
+												</outputfilterchain>
+											</redirector>
+										</exec>
+
+										<!-- find selenium server node process -->
+										<exec executable="${JAVA_HOME}/bin/jps">
+											<arg value="-l" />
+											<arg value="-m" />
+											<redirector outputproperty="processid.node">
+												<outputfilterchain>
+													<linecontains>
+														<contains value="${selenium.gridlauncher} ${selenium.node}" />
+													</linecontains>
+													<replacestring from=" ${selenium.gridlauncher} ${selenium.node}" />
+												</outputfilterchain>
+											</redirector>
+										</exec>
+
+										<!-- kill hub process -->
+										<exec executable="taskkill" osfamily="winnt">
+											<arg value="/PID" />
+											<arg value="${processid.hub}" />
+										</exec>
+										<exec executable="kill" osfamily="unix">
+											<arg value="-9" />
+											<arg value="${processid.hub}" />
+										</exec>
+
+										<!-- kill node process -->
+										<exec executable="taskkill" osfamily="winnt">
+											<arg value="/PID" />
+											<arg value="${processid.node}" />
+										</exec>
+										<exec executable="kill" osfamily="unix">
+											<arg value="-9" />
+											<arg value="${processid.node}" />
+										</exec>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
