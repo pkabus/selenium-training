@@ -24,8 +24,11 @@ We want to define the heise.de navigation bar. Therefore we extend the class Abs
 ## Step 1: Define a Page Object Model and determine locators
 Use your browser's developer tools to determine locators for all the navigation headers 'IT', 'Mobiles', 'Entertainment', 'Wissen', 'Netzpolitik', 'Wirtschaft' and 'Journal'.
 
-## Step 2: In HeiseNavigationTest
-implement testClickIT(), testClickWissen() and testClickJournal()
+## Step 2: In HeiseNavigationTest implement testClickIT()
+so that the test fails if a click on the section 'IT' failed and passes of the section has been clicked.
+
+## Step 3: In HeiseNavigationTest implement testITSelected()
+so that the test clicks on 'IT' and uses a good locator to check if 'IT' has really been selected.
 
 
 # Exercise 2
@@ -40,3 +43,10 @@ Implement the Page Object Model HeiseLandingPage in src/main/java. Define only t
 
 ## Step 3: Write a test script
 Implement the test method HeiseTest#testSearchEngine. What do we need in our test class? Don't forget to specify meaningful assertions.
+
+
+# Exercise 3
+Now we want to find a locator for the button 'Alle Top-Downloads' which can be found almost at the bottom of the heise.de front page. The test case HeiseTopDownloadsTest has already been implemented.
+
+## Step 1: Find a language independent locator...
+for the 'Alle Downloads'-Button and implement the method HeiseLandingPage#clickTopDownloads.

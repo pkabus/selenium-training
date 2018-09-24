@@ -22,6 +22,16 @@ public class HeiseLandingPage extends AbstractHeisePage {
 		super(driver);
 	}
 
-	/* YOUR CODE HERE */
+	/* TODO EXERCISE 1 & 2 */
+
+	/**
+	 * EXERCISE 3
+	 * 
+	 * @return self-reference
+	 */
+	public HeiseLandingPage clickTopDownloads() {
+		/* TODO implement method */
+		return this;
+	}
 
 }

@@ -14,6 +14,8 @@ import net.proventis.training.test.selenium.AbstractWebDriverTest;
  */
 public class HeiseNavigationTest extends AbstractWebDriverTest {
 
+	/* TODO YOUR CODE HERE */
+
 	/**
 	 * Test click on navigation link 'IT'.
 	 */
@@ -24,19 +26,11 @@ public class HeiseNavigationTest extends AbstractWebDriverTest {
 	}
 
 	/**
-	 * Test click on navigation link 'Wissen'.
+	 * Click on navigation link 'IT' and check if the browser has selected the
+	 * section 'IT'.
 	 */
 	@Test
-	public void testClickWissen() {
-		fail("Not yet implemented");
-		/* TODO YOUR CODE HERE */
-	}
-
-	/**
-	 * Test click on navigation link 'Journal'.
-	 */
-	@Test
-	public void testClickJournal() {
+	public void testITSelected() {
 		fail("Not yet implemented");
 		/* TODO YOUR CODE HERE */
 	}
