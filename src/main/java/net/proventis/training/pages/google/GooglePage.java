@@ -37,8 +37,10 @@ public class GooglePage extends AbstractPage {
 	/**
 	 * Go to google.com. Use this method to start the test run.
 	 */
-	public void goTo() {
+	@Override
+	public GooglePage goTo() {
 		this.getDriver().get("https://www.google.com");
+		return this;
 	}
 
 	/**
