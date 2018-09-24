@@ -83,7 +83,9 @@ public class GooglePage extends AbstractPage {
 		for (WebElement ele : this.searchResults) {
 			WebElement header = ele.findElement(headerClass);
 			if (StringUtils.equals(header.getAttribute("textContent"), title)) {
-				header.findElement(By.tagName("a")).click();
+				WebElement link = header.findElement(By.tagName("a"));
+				getDriverWait().until(ExpectedConditions.elementToBeClickable(link));
+				link.click();
 				return this;
 			}
 		}
