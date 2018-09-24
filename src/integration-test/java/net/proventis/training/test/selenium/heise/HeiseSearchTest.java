@@ -1,6 +1,6 @@
 package net.proventis.training.test.selenium.heise;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,12 +9,12 @@ import net.proventis.training.pages.heise.HeiseLandingPage;
 import net.proventis.training.test.selenium.AbstractWebDriverTest;
 
 /**
- * Test case(s) for heise.de
+ * Test case(s) for heise.de.
  * 
  * @author pkabus
  *
  */
-public class HeiseTest extends AbstractWebDriverTest {
+public class HeiseSearchTest extends AbstractWebDriverTest {
 
 	private HeiseLandingPage heisePage;
 
@@ -25,12 +25,12 @@ public class HeiseTest extends AbstractWebDriverTest {
 		heisePage = new HeiseLandingPage(this.getDriver());
 	}
 
+	/**
+	 * Your useful test.
+	 */
 	@Test
-	public void testClickIT() {
-		heisePage.goTo();
-		heisePage.clickNavigationIT();
-		assertTrue(this.getDriver().getCurrentUrl().endsWith("newsticker/it/"));
+	public void testSearchEngine() {
+		fail("Not yet implemented");
+		/* TODO YOUR CODE HERE */
 	}
-
-	/* YOUR CODE HERE */
 }
