@@ -2,7 +2,7 @@ package net.proventis.training.pages.heise;
 
 import org.openqa.selenium.WebDriver;
 
-import net.proventis.training.pages.supertype.AbstractPage;
+import net.proventis.training.pages.supertype.AbstractHeisePage;
 
 /**
  * Page Object Model for the start page of heise.de.
@@ -10,7 +10,7 @@ import net.proventis.training.pages.supertype.AbstractPage;
  * @author pkabus
  *
  */
-public class HeiseLandingPage extends AbstractPage {
+public class HeiseLandingPage extends AbstractHeisePage {
 
 	/**
 	 * Constructor.
