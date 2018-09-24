@@ -27,6 +27,8 @@ public abstract class AbstractPage {
 		this.wait = new WebDriverWait(driver, 30);
 	}
 
+	public abstract AbstractPage goTo();
+
 	/**
 	 * Returns this page's driver.
 	 * 
