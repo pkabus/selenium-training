@@ -34,6 +34,7 @@ public abstract class AbstractWebDriverTest {
 	private static final String SELENIUM_BROWSER = "selenium.browser";
 	private static final String BROWSER_HEADLESS = "browser.headless";
 	private static final String SELENIUM_HUB = "selenium.hub";
+	private static final boolean DISABLE_BROWSER_LOGGING = false;
 
 	private WebDriver driver;
 
@@ -104,6 +105,14 @@ public abstract class AbstractWebDriverTest {
 
 	private ChromeOptions createChromeOptions() {
 		ChromeOptions co = new ChromeOptions();
+
+		// logging in file
+		if (DISABLE_BROWSER_LOGGING) {
+			System.setProperty("webdriver.chrome.logfile",
+					Thread.currentThread().getContextClassLoader().getResource("").getPath()
+							+ System.getProperty(SELENIUM_BROWSER) + "_log");
+		}
+
 		if (startHeadless()) {
 			co.addArguments("--headless");
 		}
@@ -123,8 +132,12 @@ public abstract class AbstractWebDriverTest {
 		}
 		// Firefox profile
 		FirefoxProfile profile = new FirefoxProfile();
-		profile.setPreference("network.proxy.type", 4);
-		profile.setPreference("network.proxy.autoconfig_url", "http://wpad/wpad.dat");
+
+		// turn off logging
+		if (DISABLE_BROWSER_LOGGING) {
+			System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
+		}
+
 		fo.setProfile(profile);
 		return fo;
 	}
