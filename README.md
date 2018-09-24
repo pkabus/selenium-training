@@ -16,6 +16,8 @@ mvn clean verify
 ## Example
 You can switch to the git branch 'google', if you like to see an example of a Page Object Model (GooglePage) and a selenium test (GoogleTest).
 
+
+
 # Exercise 1
 We want to define the heise.de navigation bar. Therefore we extend the class AbstractHeisePage.
 
