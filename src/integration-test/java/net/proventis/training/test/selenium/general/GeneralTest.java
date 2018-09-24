@@ -19,7 +19,7 @@ public class GeneralTest extends AbstractWebDriverTest {
 	 */
 	@Test
 	public void testDriver() {
-		this.getDriver().get("http://www.google.de");
+		this.getDriver().get("https://www.google.de");
 		// wait here
 		assertTrue(this.getDriver().getCurrentUrl().contains("google.de"));
 	}
