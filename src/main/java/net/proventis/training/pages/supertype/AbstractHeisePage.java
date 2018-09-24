@@ -1,48 +1,32 @@
 package net.proventis.training.pages.supertype;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
- * Abstract page object model.
+ * Abstract heise page object model.
  * 
  * @author pkabus
  *
  */
-public abstract class AbstractHeisePage {
+public abstract class AbstractHeisePage extends AbstractPage {
 
-	private final WebDriver driver;
-	private final WebDriverWait wait;
+	@FindBy(name = "rubriknavi.ho.it")
+	private WebElement it;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param driver
-	 *            driver to use
-	 */
 	public AbstractHeisePage(final WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-		this.wait = new WebDriverWait(driver, 30);
+		super(driver);
 	}
 
 	/**
-	 * Returns this page's driver.
+	 * Waits until nav 'IT' is clickable and then clicks it.
 	 * 
-	 * @return the web driver
+	 * @return self-reference
 	 */
-	protected WebDriver getDriver() {
-		return driver;
+	public AbstractHeisePage clickNavigationIT() {
+		this.getDriverWait().until(ExpectedConditions.elementToBeClickable(it)).click();
+		return this;
 	}
-
-	/**
-	 * Returns this page's web driver wait.
-	 * 
-	 * @return the web driver wait
-	 */
-	protected WebDriverWait getDriverWait() {
-		return wait;
-	}
-
 }
