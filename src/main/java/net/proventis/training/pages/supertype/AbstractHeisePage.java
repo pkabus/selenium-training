@@ -16,8 +16,20 @@ public abstract class AbstractHeisePage extends AbstractPage {
 	@FindBy(name = "rubriknavi.ho.it")
 	private WebElement it;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param driver
+	 *            driver to use
+	 */
 	public AbstractHeisePage(final WebDriver driver) {
 		super(driver);
+	}
+
+	@Override
+	public AbstractHeisePage goTo() {
+		getDriver().get("https://www.heise.de");
+		return this;
 	}
 
 	/**

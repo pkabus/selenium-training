@@ -27,6 +27,7 @@ public class HeiseTest extends AbstractWebDriverTest {
 
 	@Test
 	public void testClickIT() {
+		heisePage.goTo();
 		heisePage.clickNavigationIT();
 		assertTrue(this.getDriver().getCurrentUrl().endsWith("newsticker/it/"));
 	}

@@ -4,7 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class AbstractPage {
+/**
+ * Abstract page object model.
+ * 
+ * @author pkabus
+ *
+ */
+public abstract class AbstractPage {
 
 	private WebDriver driver;
 	private WebDriverWait wait;
