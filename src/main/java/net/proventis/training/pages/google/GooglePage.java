@@ -49,11 +49,12 @@ public class GooglePage extends AbstractPage {
 	 * @param text
 	 *            text to search
 	 */
-	public void searchFor(final String text) {
+	public GooglePage searchFor(final String text) {
 		this.searchBox.sendKeys(text);
 		getDriverWait().until(ExpectedConditions.elementToBeClickable(this.searchButton));
 		this.searchButton.click();
 		getDriverWait().until(ExpectedConditions.elementToBeClickable(By.className("rc")));
+		return this;
 	}
 
 	/**
