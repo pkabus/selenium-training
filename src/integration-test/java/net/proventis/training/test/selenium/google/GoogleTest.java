@@ -1,6 +1,8 @@
 package net.proventis.training.test.selenium.google;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +40,18 @@ public class GoogleTest extends AbstractWebDriverTest {
 	public void askGoogleForAutomationTest() throws InterruptedException {
 		google.goTo();
 		google.searchFor("automation");
-		Assert.assertFalse(google.getResults().isEmpty());
+		assertFalse(google.getResults().isEmpty());
+	}
+
+	/**
+	 * 
+	 */
+	@Test
+	public void askGoogleForSeleniumAndClickOnSearchResult() {
+		google.goTo();
+		google.searchFor("selenium");
+		google.clickOnSearchResult("Selenium – Wikipedia");
+		assertTrue(this.getDriver().getCurrentUrl().contains("wikipedia"));
 	}
 
 }

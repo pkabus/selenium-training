@@ -2,7 +2,9 @@ package net.proventis.training.pages.google;
 
 import java.util.List;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -64,6 +66,29 @@ public class GooglePage extends AbstractPage {
 	 */
 	public List<WebElement> getResults() {
 		return this.searchResults;
+	}
+
+	/**
+	 * Searches the search results for the given title. If this title is not found,
+	 * a {@link NoSuchElementException} is thrown, otherwise this search result is
+	 * clicked and the method returns this object.
+	 * 
+	 * @param title
+	 *            title to search
+	 * @return self-reference
+	 */
+	public GooglePage clickOnSearchResult(final String title) {
+		By headerClass = By.className("r");
+
+		for (WebElement ele : this.searchResults) {
+			WebElement header = ele.findElement(headerClass);
+			if (StringUtils.equals(header.getAttribute("textContent"), title)) {
+				header.findElement(By.tagName("a")).click();
+				return this;
+			}
+		}
+
+		throw new NoSuchElementException("No google search result found with title: " + title);
 	}
 
 }
