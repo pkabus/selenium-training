@@ -96,7 +96,7 @@ public abstract class AbstractWebDriverTest {
 
 	private WebDriver createRemoteWebDriver() {
 		try {
-			driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getCapabilities());
+			driver = new RemoteWebDriver(new URL(seleniumHubUrl()), getCapabilities());
 			return driver;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
