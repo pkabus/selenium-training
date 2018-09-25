@@ -1,6 +1,6 @@
 package net.proventis.training.test.selenium.heise;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,8 @@ public class HeiseSearchTest extends AbstractWebDriverTest {
 	 */
 	@Test
 	public void testSearchEngine() {
-		fail("Not yet implemented");
-		/* TODO YOUR CODE HERE */
+		heisePage.goTo();
+		heisePage.searchFor("selenium");
+		assertFalse(heisePage.getSearchResults().isEmpty());
 	}
 }

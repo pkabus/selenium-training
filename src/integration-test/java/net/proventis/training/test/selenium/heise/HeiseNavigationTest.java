@@ -1,9 +1,11 @@
 package net.proventis.training.test.selenium.heise;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import net.proventis.training.pages.heise.HeiseLandingPage;
 import net.proventis.training.test.selenium.AbstractWebDriverTest;
 
 /**
@@ -14,15 +16,23 @@ import net.proventis.training.test.selenium.AbstractWebDriverTest;
  */
 public class HeiseNavigationTest extends AbstractWebDriverTest {
 
-	/* TODO YOUR CODE HERE */
+	private HeiseLandingPage heisePage;
+
+	@Override
+	@Before
+	public void setUp() {
+		super.setUp();
+		heisePage = new HeiseLandingPage(getDriver());
+	}
 
 	/**
 	 * Test click on navigation link 'IT'.
 	 */
 	@Test
 	public void testClickIT() {
-		fail("Not yet implemented");
-		/* TODO YOUR CODE HERE */
+		heisePage.goTo();
+		heisePage.clickNavIt();
+		assertTrue(this.getDriver().getCurrentUrl().contains("newsticker/it/"));
 	}
 
 	/**
@@ -31,7 +41,9 @@ public class HeiseNavigationTest extends AbstractWebDriverTest {
 	 */
 	@Test
 	public void testITSelected() {
-		fail("Not yet implemented");
-		/* TODO YOUR CODE HERE */
+		heisePage.goTo();
+		heisePage.clickNavIt();
+		assertTrue(heisePage.getNavIt().getAttribute("class").contains("active"));
+
 	}
 }

@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
  */
 public abstract class AbstractHeisePage extends AbstractPage {
 
+
+	
 	/**
 	 * Constructor.
 	 * 
@@ -25,4 +27,5 @@ public abstract class AbstractHeisePage extends AbstractPage {
 		getDriver().get("https://www.heise.de");
 		return this;
 	}
+
 }
