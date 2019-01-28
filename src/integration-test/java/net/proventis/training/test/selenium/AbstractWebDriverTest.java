@@ -20,6 +20,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Abstract JUnit test case, that loads selenium-specific properties and creates
@@ -54,6 +55,13 @@ public abstract class AbstractWebDriverTest {
 			// otherwise run selenium locally
 			createLocalWebDriver();
 		}
+	}
+	
+	/** General webdriver wait object.
+	 * @return wait
+	 */
+	protected WebDriverWait getWait() {
+		return new WebDriverWait(getDriver(), 20);
 	}
 
 	private void loadSeleniumProperties() {
